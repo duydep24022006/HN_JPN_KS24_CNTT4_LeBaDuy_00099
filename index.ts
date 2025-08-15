@@ -124,6 +124,7 @@ class CourseManager {
     } else {
       course = new PaidCourse(id, courseName, coursePrice, courseDuration, 0);
     }
+    this.courses.push(course);
     console.log("thêm khóa học thành công");
   }
   createNewDiscount(discountCode: string, discountValue: number): void {
@@ -144,6 +145,7 @@ class CourseManager {
 
     return courseFind.getCourse();
   }
+
   listCourses(numOfStudents?: number): void {
     this.courses.map((item) =>
       console.log(`
@@ -152,6 +154,37 @@ class CourseManager {
                 RefundPolicy:${item.getRefundPolicy}
                 `)
     );
+  }
+
+  showUserInformation(email: string): void {
+    const userFind = this.users.find((item) => item.email == email);
+    if (!userFind) {
+      console.log("không tìm thấy email");
+    } else {
+      userFind.getDetails();
+    }
+  }
+  calculateTotalRevenue(): number {
+    return this.courses.reduce((total, course) => {
+      if (course instanceof PaidCourse) {
+        return total + course.students * course.price;
+      }
+      return total;
+    }, 0);
+  }
+  giftDiscount(userId: string, discountCode: string): void {
+    const userFind = this.users.find((item) => item.id == userId);
+    if (!userFind) {
+      console.log("không tìm thấy người dùng");
+      return;
+    }
+    const discount = this.discounts.find((d) => d.code == discountCode);
+    if (!discount) {
+      console.log("không tìm thấy mã giảm giá");
+      return;
+    }
+    userFind.discounts.push(discountCode);
+    console.log(`Đã tặng mã giảm giá "${discountCode}" cho ${userFind.name}`);
   }
 }
 
@@ -192,12 +225,18 @@ do {
     case 5:
       break;
     case 6:
+      courseManagers.listCourses();
       break;
     case 7:
+      courseManagers.showUserInformation("duy@gmail.com");
       break;
     case 8:
+      console.log(
+        "Tổng doanh thu: " + courseManagers.calculateTotalRevenue() + " VND"
+      );
       break;
     case 9:
+      courseManagers.giftDiscount("1", "duydeptrai");
       break;
     case 10:
       break;
