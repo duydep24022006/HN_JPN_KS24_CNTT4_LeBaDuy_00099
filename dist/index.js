@@ -174,11 +174,12 @@ do {
       courseManagers.handleBuyCourse("1", "1");
       break;
     case 5:
-      listCourses(numOfStudents);
+      courseManagers.listCourses(numOfStudents);
       break;
       case 6:
+          courseManagers.showUserInformation("duy@gmail.com");
           
-      showUserInformation("duy@gmail.com");
+          
       break;
     case 7:
       break;
