@@ -186,6 +186,14 @@ class CourseManager {
     userFind.discounts.push(discountCode);
     console.log(`Đã tặng mã giảm giá "${discountCode}" cho ${userFind.name}`);
   }
+  getRefundPolicy(courseId: string): void {
+    const courseFind = this.courses.find((item) => item.courseId === courseId);
+    if (!courseFind) {
+      console.log("không tìm thấy khóa học");
+      return;
+    }
+    courseFind.getRefundPolicy();
+  }
 }
 
 let choice: number;
@@ -240,7 +248,8 @@ do {
       break;
     case 10:
       break;
-    case 11:
+      case 11:
+            courseManagers.getRefundPolicy("1");
       break;
     case 12:
       console.log("cảm ơn bạn đã sử dungh trương trình");
